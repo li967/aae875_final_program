@@ -58,70 +58,29 @@ def greetings(user_name):
     print('\nOk, I can help you with this.')
 
 
+
 def os_and_drive_letter():
     '''
-    # sets OS and drive letter. The user is prompted to enter the computer's
-    # operating system. Example: Windows, Mac.
-    # @param: none.
+    # sets OS and drive letter. 
+    # 1) The user is prompted to enter the computer's operating system. 
+    #    Example: Windows, Mac.
+    # 2) Sets the drive letter depending on the specified OS
+    # @param: none
     # @return: cdrive
+    '''
+    return pt.operating_system()
+    
+    
+def set_input_output_path(cdrive):
+    '''
+    # Get input output path from user, and set path
+    # Example:
+    # USER PATH: C:\\classes\aae875\python
+    # USER INPUT: "classes, aae875, python"
+    # @param: none.
+    # @return: (input_path, output_path)
     ''' 
-    print('What is your computer\'s operating system?')
-    user_os = input('>:')
-    user_os = user_os.lower().replace(' ','')
-    
-    
-    if user_os == 'windows':
-        cdrive = str(os.getcwd()).split(os.path.sep)[0]
-        print('Nice. Your drive letter is now set to', cdrive + '\\\\')
-        return cdrive
-    else:
-        print('Nice.')
-        
-        
-
-
-def input_path(cdrive):
-    '''
-    # sets the input path and saves its value globally
-    # The user is prompted to enter the input path.
-    # For example, if user path is "N:\Classes\AAE875\DataAnalytics\FinalProgram\Input"
-    # then Classes, AAE875, DataAnalytics, FinalProgram, Input will be entered
-    # in the command line.
-    # @param: cdrive
-    # @return: input_path
-    '''
-    print('\nWhat is your input path?')
-    user_path = input('>:').split(', ')
-    input_path = ''
-    for token in user_path:
-        input_path = os.path.join(input_path, token)
-    
-    print('Your input path is now set to', input_path)
-    
-    input_path = os.path.join(cdrive, input_path)
-    return input_path
-
-
-def output_path(cdrive):
-    '''
-    # sets the output path and saves its value globally.
-    # The user is prompted to enter the output path.
-    # For example, if user path is "N:\Classes\AAE875\DataAnalytics\FinalProgram\Output"
-    # then Classes, AAE875, DataAnalytics, FinalProgram, Output will be entered
-    # in the command line.
-    # @param: cdrive
-    # @return: output_path
-    '''
-    print('\nWhat is your output path?')
-    user_path = input('>:').split(', ')
-    output_path = ''
-    for token in user_path:
-        output_path = os.path.join(output_path, token)
-    
-    print('Your input path is now set to', output_path)
-    
-    output_path = os.path.join(cdrive, output_path)
-    return output_path
+    return(pt.input_path(cdrive), pt.output_path(cdrive))
     
 
 def input_data():
@@ -183,14 +142,11 @@ def main():
     # print greetings; get user name
     greetings(user_name)
     
-    # set OS and drive letter
+    # get user os and set drive letter (for windows)
     cdrive = os_and_drive_letter()
-
-    # set input path
-    input_dir = input_path(cdrive)
     
-    # set output path
-    output_dir = output_path(cdrive)
+    # set input path and output path
+    input_dir, output_dir = set_input_output_path(cdrive)
     
     # input the data
     input_list, user_dtstructure = input_data()
