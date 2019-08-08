@@ -1,10 +1,10 @@
 ################################# NY HOSPITALS #################################
 #
-# Title:
-# Files: paths.py, datacleaning.py, inputdata.py, [add more here]
+# Title: AAE 875 Final Program
+# Files: paths.py, cleaning.py, input.py, paths.py, regression.py, statistics.py 
 #
-# Author:
-# Email:
+# Author: Yuxuan Li
+# Email:  li967@wisc.edu
 #
 ############################### OUTSIDE HELP CREDITS ###########################
 #
@@ -15,6 +15,16 @@
 
 
 #import modules here
+
+import cleaning as cl
+import input as ip
+import paths as pt
+import regression as reg
+import statistics as st
+
+import platform
+import os
+
 
 '''
 #
@@ -28,7 +38,14 @@ def welcome_prompt():
     # prints the welcome prompt.
     # @param: none.
     '''
-    pass
+    print("Hi, I'm Freddie, what is your name?")
+
+    user_name  = input(">:")
+    if user_name == 'C.Ilin':
+        user_name = 'Cornelia'
+        
+    return(user_name)    
+
 
 
 def greetings(user_name):
@@ -36,7 +53,9 @@ def greetings(user_name):
     # Freddie gets the user name and asks what he can do.
     # @ param: user_name.
     '''
-    pass
+    print("\nNice to meet you %s. How can I help you today?" % user_name)   
+    command = input('>:')
+    print('\nOk, I can help you with this.')
 
 
 def os_and_drive_letter():
@@ -44,32 +63,65 @@ def os_and_drive_letter():
     # sets OS and drive letter. The user is prompted to enter the computer's
     # operating system. Example: Windows, Mac.
     # @param: none.
+    # @return: cdrive
     ''' 
-    pass
+    print('What is your computer\'s operating system?')
+    user_os = input('>:')
+    user_os = user_os.lower().replace(' ','')
+    
+    
+    if user_os == 'windows':
+        cdrive = str(os.getcwd()).split(os.path.sep)[0]
+        print('Nice. Your drive letter is now set to', cdrive + '\\\\')
+        return cdrive
+    else:
+        print('Nice.')
+        
+        
 
 
-def input_path():
+def input_path(cdrive):
     '''
     # sets the input path and saves its value globally
     # The user is prompted to enter the input path.
     # For example, if user path is "N:\Classes\AAE875\DataAnalytics\FinalProgram\Input"
     # then Classes, AAE875, DataAnalytics, FinalProgram, Input will be entered
     # in the command line.
-    # @param: none.
+    # @param: cdrive
+    # @return: input_path
     '''
-    pass
+    print('\nWhat is your input path?')
+    user_path = input('>:').split(', ')
+    input_path = ''
+    for token in user_path:
+        input_path = os.path.join(input_path, token)
+    
+    print('Your input path is now set to', input_path)
+    
+    input_path = os.path.join(cdrive, input_path)
+    return input_path
 
 
-def output_path():
+def output_path(cdrive):
     '''
     # sets the output path and saves its value globally.
     # The user is prompted to enter the output path.
     # For example, if user path is "N:\Classes\AAE875\DataAnalytics\FinalProgram\Output"
     # then Classes, AAE875, DataAnalytics, FinalProgram, Output will be entered
     # in the command line.
-    # @param: none.
+    # @param: cdrive
+    # @return: output_path
     '''
-    pass
+    print('\nWhat is your output path?')
+    user_path = input('>:').split(', ')
+    output_path = ''
+    for token in user_path:
+        output_path = os.path.join(output_path, token)
+    
+    print('Your input path is now set to', output_path)
+    
+    output_path = os.path.join(cdrive, output_path)
+    return output_path
     
 
 def input_data():
@@ -79,26 +131,44 @@ def input_data():
     # SCARCS2016.csv
     # inputs the data structure. The user is prompted to enter the desired data
     # structure. Available options are: list(csv), array (numpy), dataframe(pandas)
+    # if the user enters a data structure other than the ones listed above, Freddie
+    # responds "I don't know how to read this data structure"
     # @param: none
+    # @return: (a list of input data names, one of three data structure)
     '''
-    pass
+    print('\nWhat are the names of your data files?')
+    input_list = input('>:').split(', ')
+    
+    print('\nWhat is the data structure you would like to work with?')
+    user_dtstructure = input('>:')
+    
+    # test if the data structure chosen by user is valid
+    while True:
+        if not user_dtstructure in ['list(csv)', 'array (numpy)', 'dataframe(pandas']:
+            print("I don't know how to read this data structure")
+            user_dtstructure = input('>:')
+        else:
+            break
+    
+    return (input_list, user_dtstructure) 
     
 def data_cleaning():
-	'''
-	# your comments here
-	'''
-    pass    
+    '''
+    # your comments here
+    '''
+    pass
+
 
 def summary_stats():
-	'''
-	# your comments here
+    '''
+    # your comments here
 	'''
     pass 
     
 def linear_model():
-	'''
-	# your comments here
-	'''
+    '''
+    # your comments here
+    '''
     pass 
         
 
@@ -108,27 +178,27 @@ def linear_model():
 
 def main():
     # print welcome prompts
-    welcome_prompt()
+    user_name = welcome_prompt()
 
     # print greetings; get user name
-    user_input = input(">: ")
-    user_input = "CI"
-    greetings(user_input)
+    greetings(user_name)
     
     # set OS and drive letter
-    os_and_drive_letter()
+    cdrive = os_and_drive_letter()
 
     # set input path
-    input_path()
+    input_dir = input_path(cdrive)
     
     # set output path
-    output_path()
+    output_dir = output_path(cdrive)
     
     # input the data
-    input_data()
+    input_list, user_dtstructure = input_data()
+    ip.read_data(input_list, user_dtstructure, input_dir)
 
 
 if __name__ == "__main__":
+    
     main()
 
     

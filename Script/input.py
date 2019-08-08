@@ -23,10 +23,21 @@ def read_data(file_names, data_structure, input_path):
     # this function reads in data (file_names)
     # the desired data structure is provided by the user
     # the desired data structure can be list(csv), array (numpy), dataframe(pandas)
-    # if the user enters a data structure other than the ones listed above, Freddie
-    # responds "I don't know how to read this data structure"
     # @param: file_names, data_structure, input_path
     '''
+    
+    read_list = []
+    for index, token in enumerate(file_names):
+        read_list.append(input_path + token)
+        
+
+    if data_structure == 'list(csv)':
+        print(read_list)
+    elif data_structure == 'array(numpy)':
+        print(-1)
+    elif data_structure == 'dataframe(pandas)':
+        print(-1)
+    
  
       
                
