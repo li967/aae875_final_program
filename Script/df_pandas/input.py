@@ -20,12 +20,15 @@ import pandas as pd
 import os
 
 input_path = "G:\\Box Sync\\MyFiles\\875\\final_program_git\\aae875_final_program\\Input\\RawData"
+input_path = "/Users/liyuxuan/aae875_final_program/Input/RawData/"
 file_names = ['SPARCS2014.csv', 'SPARCS2015.csv', 'SPARCS2016.csv']
 
-def read_data(file_names, input_path, i):
+
+def read_single_data(file_names, input_path, i):
     '''
     # this function reads in data (file_names)
-    # @param: file_names (list), input_path
+    # @param: file_names (list), input_path, i (the i-th datafile)
+    # @return: one uploaded data
     '''
     # append input path to data name        
     read_list = [os.path.join(input_path,file) for file in file_names]
@@ -40,7 +43,7 @@ def read_data(file_names, input_path, i):
     chunks = []
     index=0
     # start loop
-    print('Start read file', read_list[i], 'by chunk.')
+    print('Start read file', file_names[i], 'by chunk.')
     print('Chunk size:', chunkSize)
     while loop:
         try:
@@ -59,13 +62,28 @@ def read_data(file_names, input_path, i):
     print('Merge over.')
     
     # some useful information
-    data_shape = data.shape
-    data_unique = data.drop_duplicates()
-    data_uniq_shape = data_unique.shape
-    data_colnames = data.columns
-    data_slice = data.sample(n=100)
-    return data_shape, data_uniq_shape, data_colnames, data_slice
+    #data_shape = data.shape
+    #data_unique = data.drop_duplicates()
+    #data_uniq_shape = data_unique.shape
+    #data_colnames = data.columns
+    #data_slice = data.sample(n=100)
+    return data
 
+def read_data(file_names, input_path):
+    '''
+    # call read_single_data function to read data multiple times
+    # return a list of dataframes
+    # @param: file_names, input_path
+    # @return: data_list
+    '''
+    data_list = []
+    for i in range(len(file_names)):
+        data = read_single_data(file_names, input_path, i)
+        data_list.append(data)
+        
+    print('\nAll data files uploaded')
+    return data_list
+        
         
 def rows_and_columns(file_list):
     print('Tell me what you would like to do next?')
@@ -74,11 +92,11 @@ def rows_and_columns(file_list):
     
     
 if __name__ == '__main__':
-    dt14_shape, dt14_uniq_shape, dt14_colnames, dt14_slice = read_data(file_names, input_path,0)
-    dt15_shape, dt15_uniq_shape, dt15_colnames, dt15_slice = read_data(file_names, input_path,1)
-    dt16_shape, dt16_uniq_shape, dt16_colnames, dt16_slice = read_data(file_names, input_path,2)
+    data2014 = read_data(file_names, input_path,0)
+    data2015 = read_data(file_names, input_path,1)
+    data2016 = read_data(file_names, input_path,2)
     
-    print('out function test', dt14.shape, dt15.shape,dt16.shape)
+    print('out function test', data2014.shape, data2015.shape, data2016.shape)
     
 
 

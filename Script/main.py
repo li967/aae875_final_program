@@ -110,7 +110,7 @@ def input_data():
     # get preferred data structure
     print('\nWhat is the data structure you would like to work with?')
     user_dtstructure = pt.data_structure_test()
-    print('\nOk, good choice.', end = '')
+    print('\nOk, good choice.')
         
     return (input_list, user_dtstructure) 
     
@@ -118,7 +118,7 @@ def data_cleaning():
     '''
     # your comments here
     '''
-    pass
+    print('')
 
 
 def summary_stats():
@@ -159,10 +159,14 @@ def main():
         # read data
         file_list = cip.read_data(input_list, input_dir)
         # how many rows and columns
-        cip.rows_and_columns(file_list)
+        ccl.rows_and_columns(file_list)
     if user_dtstructure == 'dataframe':
-        file_list = dip.read_data(input_list, input_dir)
-
+        # read data
+        data_list = dip.read_data(input_list, input_dir)
+        
+        print(user_name +', tell me what you would like to do next?')
+        # how many rows and columns
+        dcl.rows_and_columns(data_list)
 
 if __name__ == "__main__":
     

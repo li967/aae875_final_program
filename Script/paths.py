@@ -36,8 +36,8 @@ def operating_system():
         print('Nice. Your drive letter is now set to', cdrive)
         return cdrive
     else: # for mac user
-        print('Nice.')
-        return ''
+        print('Nice. Your innitial working directory is now set to /Users')
+        return '/Users/'
 
         
 def input_path_conversation():
