@@ -58,7 +58,13 @@ def read_data(file_names, input_path, i):
     data = pd.concat(chunks, ignore_index= True)
     print('Merge over.')
     
-    return data
+    # some useful information
+    data_shape = data.shape
+    data_unique = data.drop_duplicates()
+    data_uniq_shape = data_unique.shape
+    data_colnames = data.columns
+    data_slice = data.sample(n=100)
+    return data_shape, data_uniq_shape, data_colnames, data_slice
 
         
 def rows_and_columns(file_list):
@@ -68,15 +74,14 @@ def rows_and_columns(file_list):
     
     
 if __name__ == '__main__':
-    #data2014 = read_data(file_names, input_path,0)
-    #data2015 = read_data(file_names, input_path,1)
-    data2016 = read_data(file_names, input_path,2)
+    dt14_shape, dt14_uniq_shape, dt14_colnames, dt14_slice = read_data(file_names, input_path,0)
+    dt15_shape, dt15_uniq_shape, dt15_colnames, dt15_slice = read_data(file_names, input_path,1)
+    dt16_shape, dt16_uniq_shape, dt16_colnames, dt16_slice = read_data(file_names, input_path,2)
     
-    # print('out function test', data2014.shape, data2015.shape,data2016.shape)
+    print('out function test', dt14.shape, dt15.shape,dt16.shape)
     
 
-    for i in data2016:
-        print(type(data2016[i][0]))
+
     
         
  
