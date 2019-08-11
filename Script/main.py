@@ -114,12 +114,37 @@ def input_data():
         
     return (input_list, user_dtstructure) 
     
-def data_cleaning():
+def data_cleaning(data_list, user_dtstructure, user_name):
     '''
-    # your comments here
+    # checking data shapes, cleaning, merging
+    # calling different modules depend on user-chosen data structure
+    # @param: a list of data
+    # @return: ??
     '''
-    print('')
+    print(user_name + ', tell me what you would like to do next?')
+    command = input(">:")
+    print('Let me check... oh... this data is really big,', user_name)
+    
+    if user_dtstructure == 'dataframe':
+        # get numbers of rows and columns
+        nrow, ncol = dcl.rows_and_columns(data_list)
+        print('You have %(nrow)d inpatient discharges and %(ncol)d variables\
+         that document these observations.' %{
+             nrow:nrow, ncol:ncol})
+        
+        # chatting
+        command = input(":>")
+        command = input(":>")
 
+
+        # drop missing values
+        print('\nNo problem, I can help you with this. Let\'s clean the data first.')
+        print('Would you like to drop observations with missing values?')
+        command = input(":>")
+        
+        # remove duplications
+        data_list = [data.drop_duplicates() for data in data_list]
+        
 
 def summary_stats():
     '''
@@ -153,20 +178,19 @@ def main():
     
     # input the data
     input_list, user_dtstructure = input_data()
-    
-    # if user choose to work with csv
-    if user_dtstructure == 'list':
+    if user_dtstructure == 'list': # for user choosing csv/list
         # read data
         file_list = cip.read_data(input_list, input_dir)
         # how many rows and columns
         ccl.rows_and_columns(file_list)
-    if user_dtstructure == 'dataframe':
+    if user_dtstructure == 'dataframe': # for user choosing dataframe
         # read data
-        data_list = dip.read_data(input_list, input_dir)
-        
-        print(user_name +', tell me what you would like to do next?')
-        # how many rows and columns
-        dcl.rows_and_columns(data_list)
+        data_list = dip.read_data(input_list, input_dir, user_name)
+    
+    
+    # checking data shape, cleaning, merging
+    data_cleaning(data_list, user_dtstructure)
+    
 
 if __name__ == "__main__":
     
