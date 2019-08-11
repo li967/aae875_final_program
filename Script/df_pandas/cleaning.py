@@ -35,8 +35,11 @@ def drop_missing_values(data_list):
     # @param:  data_list
     # @return: new_data_list
     '''
+    # drop unuseful variables (which contains too many missings)
+    cols = list(range(0,30)) + list(range(32,37)) 
+    data_list = [data.iloc[:,cols] for data in data_list ]
     # drop missing values
-    new_data_list = [dataset.dropna() for dataset in data_list]
+    new_data_list = [data.dropna() for data in data_list]
     return new_data_list
 
 def drop_outliers(data_list):
@@ -84,10 +87,10 @@ def align_colnames(data_list, data_colnames):
     # put var names standards in dictionaries
     std = {}
     for i in range(data_colnames.shape[0]):
-        std.update({str(data_colnames.iloc[[0],[i]]):str(data_colnames.iloc[[2],[i]])})
+        std.update({str(data_colnames.iloc[i,0]):str(data_colnames.iloc[i,2])})
         
     # rename datasets using dictionaries
-    new_data_list = [data.rename(columns = std, inplace = True) for data in data_list]
+    new_data_list = [data.rename(columns = std) for data in data_list]
     
     return new_data_list
     
@@ -111,11 +114,16 @@ if __name__ == '__main__':
     data_list = drop_outliers(data_list)
     print('Outlier', rows_and_columns(data_list))
     
-    '''data col names'''
+    # data col names
     data_colnames = compare_colnames(data_list, file_names) #compare raw
     print(data_colnames)
     data_list = align_colnames(data_list, data_colnames)    #rename
     data_colnames = compare_colnames(data_list, file_names) #compare new
     print(data_colnames)
+    
+    # merge data
+    user_data = pd.concat(data_list)
+    # output cleaned data to json
+    Export = user_data.to_csv(input_path +'user_data.csv')
     
     
