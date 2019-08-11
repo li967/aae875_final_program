@@ -16,14 +16,21 @@
 
 #import modules here
 
-import cleaning as cl
-import input as ip
 import paths as pt
-import regression as reg
-import statistics as st
+
+from list_csv import cleaning as ccl
+from list_csv import input as cip
+from list_csv import regression as creg
+from list_csv import statistics as cst
+
+from df_pandas import cleaning as dcl
+from df_pandas import input as dip
+from df_pandas import regression as dreg
+from df_pandas import statistics as dst
 
 import platform
 import os
+import pandas as pd
 
 
 '''
@@ -80,6 +87,7 @@ def set_input_output_path(cdrive):
     # @param: none.
     # @return: (input_path, output_path)
     ''' 
+    
     return(pt.input_path(cdrive), pt.output_path(cdrive))
     
 
@@ -95,20 +103,15 @@ def input_data():
     # @param: none
     # @return: (a list of input data names, one of three data structure)
     '''
+    # get data file names
     print('\nWhat are the names of your data files?')
     input_list = input('>:').split(', ')
     
+    # get preferred data structure
     print('\nWhat is the data structure you would like to work with?')
-    user_dtstructure = input('>:')
-    
-    # test if the data structure chosen by user is valid
-    while True:
-        if not user_dtstructure in ['list(csv)', 'array (numpy)', 'dataframe(pandas']:
-            print("I don't know how to read this data structure")
-            user_dtstructure = input('>:')
-        else:
-            break
-    
+    user_dtstructure = pt.data_structure_test()
+    print('\nOk, good choice.', end = '')
+        
     return (input_list, user_dtstructure) 
     
 def data_cleaning():
@@ -150,14 +153,24 @@ def main():
     
     # input the data
     input_list, user_dtstructure = input_data()
-    ip.read_data(input_list, user_dtstructure, input_dir)
+    
+    # if user choose to work with csv
+    if user_dtstructure == 'list':
+        # read data
+        file_list = cip.read_data(input_list, input_dir)
+        # how many rows and columns
+        cip.rows_and_columns(file_list)
+    if user_dtstructure == 'dataframe':
+        file_list = dip.read_data(input_list, input_dir)
 
 
 if __name__ == "__main__":
     
+    # data = pd.read_csv('G:\\BoxSync\\MyFiles\\875\\final_program_git\\aae875_final_program\\Input\\RawData\\SPARCS2014.csv')
+    '''
+    f = open ('G:\\BoxSync\\MyFiles\\875\\final_program_git\\aae875_final_program\\Input\\RawData\\SPARCS2014.csv', 'r')
+    data.head()
+    data = list(csv.reader(f, delimiter = ','))
+    file_list.append(data)
+    '''
     main()
-
-    
-
-    
-    

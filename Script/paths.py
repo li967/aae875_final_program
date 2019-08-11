@@ -32,8 +32,8 @@ def operating_system():
     
     # set drives letter (for windows user)
     if user_os == 'windows':
-        cdrive = str(os.getcwd()).split(os.path.sep)[0]
-        print('Nice. Your drive letter is now set to', cdrive + '\\\\')
+        cdrive = str(os.getcwd()).split(os.path.sep)[0] + '\\'
+        print('Nice. Your drive letter is now set to', cdrive)
         return cdrive
     else: # for mac user
         print('Nice.')
@@ -99,7 +99,7 @@ def input_path(cdrive):
     input_path = input_path_conversation()
     
     # merge the drive and input path and return
-    input_dir = os.path.join(cdrive, input_path)
+    input_dir = cdrive + input_path
     return input_dir
     
 
@@ -114,5 +114,41 @@ def output_path(cdrive):
     output_path = output_path_conversation()
     
     # merge the drive and input path and return
-    output_dir = os.path.join(cdrive, output_path)
+    output_dir = cdrive + output_path
     return output_dir
+
+def data_structure_test():
+    '''
+    # get user-preferred data structure
+    # test if the data structure chosen by user is valid, and 
+    # return the matched structure (EX: input list(csv), return list)
+    # if the user input structure is not valid, prompt to re-enter
+    #
+    # Available sutrctures:
+    # list or list(csv), array or array(numpy), dataframe or datafroma(pandas)
+    # @return: user_dtstructure (cleaned)
+    '''
+    # get data structure
+    user_dtstructure = input('>:')
+    
+    # test if user_dtstructure is valid, if not, prompt to re-enter
+    while True:
+        # match the structures (remove the parentheses)
+        user_dtstructure.lower()
+        user_dtstructure = user_dtstructure.split('(')[0]
+        if user_dtstructure in ['panda', 'pandas','df']:
+            user_dtstructure = 'dataframe'
+        if user_dtstructure in ['csv', 'l']:
+            user_dtstructure = 'list'
+        if user_dtstructure in ['numpy', 'num']:
+            user_dtstructure = 'array'
+        
+        # test
+        if not user_dtstructure in ['list', 'array', 'dataframe']:
+            print("I don't know how to read this data structure.")
+            print("Please try list, array or dataframe.")
+            user_dtstructure = input('>:')
+        else:
+            break
+    
+    return user_dtstructure
