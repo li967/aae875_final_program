@@ -31,12 +31,15 @@ from df_pandas import statistics as dst
 import platform
 import os
 import pandas as pd
+from lib2to3.fixer_util import Comma
+from df_pandas.cleaning import data_colnames
+from df_pandas.input import file_names
 
 
 '''
 #
-# The main.py script holds the user input and response formation for a data analyst 
-# chatboot that collects user input and responds appropriately. 
+# The main.py script holds the user input and response formation for a data 
+# analyst chatboot that collects user input and responds appropriately. 
 #
 '''
 
@@ -114,12 +117,12 @@ def input_data():
         
     return (input_list, user_dtstructure) 
     
-def data_cleaning(data_list, user_dtstructure, user_name):
+def data_cleaning(data_list, user_dtstructure, user_name, file_names):
     '''
     # checking data shapes, cleaning, merging
     # calling different modules depend on user-chosen data structure
     # @param: a list of data
-    # @return: ??
+    # @return: cleaned, missing/outlier dropped, merged dataframe
     '''
     print(user_name + ', tell me what you would like to do next?')
     command = input(">:")
@@ -130,11 +133,10 @@ def data_cleaning(data_list, user_dtstructure, user_name):
         nrow, ncol = dcl.rows_and_columns(data_list)
         print('You have %(nrow)d inpatient discharges and %(ncol)d variables\
          that document these observations.' %{
-             nrow:nrow, ncol:ncol})
-        
+             'nrow':nrow, 'ncol':ncol})
         # chatting
-        command = input(":>")
-        command = input(":>")
+        command = input(">:")
+        command = input(">:")
 
 
         # drop missing values
@@ -142,13 +144,61 @@ def data_cleaning(data_list, user_dtstructure, user_name):
         print('Would you like to drop observations with missing values?')
         command = input(":>")
         
-        # remove duplications
-        data_list = [data.drop_duplicates() for data in data_list]
+        data_list = dcl.drop_missing_values(data_list) # drop missings
+        nrow, ncol = dcl.rows_and_columns(data_list)   # update data shape after dropping
+        print("\nI have removed all the missing values in your data.") # chatting
+        print('You now have %(pat)d million inpatient discharges and %(var)d \
+that document these observations.' %{
+            'pat':nrow, 'var':ncol})                   # chatting
+        command = input(">:")
+        
+        # remove data outliers
+        print("Right... would you like to remove data outliers?") 
+        command = input(">:")
+        
+        data_list = dcl.drop_outliers(data_list)     # drop outliers using IQR boundary
+        nrow, ncol = dcl.rows_and_columns(data_list) # update data shape after dropping
+        print('\nI have removed all outliers in your data.')
+        print('You now have %(pat)d inpatient discharges and %(var)d variables\
+ that document these observations.'  %{
+            'pat':nrow, 'var':ncol})                 # chatting
+        command = input(">:")
+        command = input(">:")
+        
+        # deal with not-matching column names 
+        print('I am afraid this is not the best way to move forward.', end = ' ')
+        print('The variable names in your data are not consistent over time.')
+        data_colnames = dcl.compare_colnames(data_list, file_names) # get var names
+        
+        
+        print('Let me put these in a table for you. Please see below:')
+        print(data_colnames) # reporting variable names over year
+        command = input('>:')# chatting, user require to align names
+        
+        print('Sure thing! I will use a dictionary for this. Processing...')
+        data_list = dcl.align_colnames(data_list, data_colnames) # update col names
+        data_colnames = dcl.compare_colnames(data_list, file_names) # get new names
+        print('Variable names match those in year 2016 now. Please see below:')
+        print(data_colnames)
+        
+        # merge data
+        user_data = pd.concat(data_list)
+    
+    # Chatting, ask if user want do more data cleaning    
+    command = input('>:')
+    print('\nYes, unless you want to do more data cleaning?')
+    command = input('>:')
+        
+    # End of data cleaning. Return the merged dataframe
+    return user_data
+        
         
 
-def summary_stats():
+def summary_stats(user_data):
     '''
-    # your comments here
+    # summary stats plotting
+    # @param: user_data (one dataframe)
+    # @return:??
 	'''
     pass 
     
@@ -188,8 +238,11 @@ def main():
         data_list = dip.read_data(input_list, input_dir, user_name)
     
     
-    # checking data shape, cleaning, merging
-    data_cleaning(data_list, user_dtstructure)
+    # checking data shape, deleting outliers, merging
+    user_data = data_cleaning(data_list, user_dtstructure, user_name, input_list)
+    
+    # stat description
+    summary_stats(user_data)
     
 
 if __name__ == "__main__":

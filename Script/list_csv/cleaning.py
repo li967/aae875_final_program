@@ -12,3 +12,6 @@
 # Online sources:
 #
 ############################### 80 COLUMNS WIDE ################################
+
+def rows_and_columns():
+    pass

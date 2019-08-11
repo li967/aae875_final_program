@@ -35,8 +35,9 @@ def read_single_data(file_names, input_path, i):
     # data_list = [] # a list to store all the data
     # data = pd.read_csv(read_list[i],low_memory=False)
     
-    # read data (by chunk in loops)(to avoid MemoryError)  
-    data = pd.read_csv(read_list[i], sep=',',engine = 'python',iterator=True)
+    # read data (by chunk in loops)(to avoid MemoryError)
+    cols = list(range(0,30)) + list(range(32,37))  
+    data = pd.read_csv(read_list[i], usecols = cols, sep=',',engine = 'python',iterator=True)
     # loop sets
     loop = True
     chunkSize = 1000
@@ -56,7 +57,7 @@ def read_single_data(file_names, input_path, i):
             loop = False
             print("Iteration is stopped.")
     # merge chunks
-    print('Uploaded', read_list[i])
+    print('Uploaded', file_names[i])
     print('Start merge chunks')
     data = pd.concat(chunks, ignore_index= True)
     print('Merge over.')
@@ -84,12 +85,7 @@ def read_data(file_names, input_path):
     print('\nAll data files uploaded')
     return data_list
         
-        
-def rows_and_columns(file_list):
-    print('Tell me what you would like to do next?')
-    for file in file_list:
-        print(len(file))
-    
+
     
 if __name__ == '__main__':
     data2014 = read_data(file_names, input_path,0)
