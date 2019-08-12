@@ -13,13 +13,11 @@
 #
 ############################### 80 COLUMNS WIDE ################################
 
-from df_pandas import input as dip
- 
+
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import os
-from _operator import concat
 
 
 def slice_data(df):
@@ -38,14 +36,11 @@ def slice_data(df):
     # @param: original dataframe
     # @return: new dataframe
     '''
-    # select vars as described above
+    # select data as described above
     cols = [6,8,11,12,14,16,27,28,29,34,35]
-    df = df.iloc[:,cols]
+    df = df.iloc[:,cols].loc[df['CCS Diagnosis Description'] == 'Asthma']
     
-    # filter to asthma
-    df_asthma = df.loc[df['CCS Diagnosis Description'] == 'Asthma', :]
-    
-    return df_asthma
+    return df
 
     
     
@@ -110,8 +105,9 @@ def plot_payment_pie(df):
 
 
 if __name__ == '__main__':    
-    input_path = "G:\\Box Sync\\MyFiles\\875\\final_program_git\\aae875_final_program\\Input\\RawData"
-    data_name = os.path.join(input_path, 'user_data_sample.csv')
+    # input_path = "G:\\Box Sync\\MyFiles\\875\\final_program_git\\aae875_final_program\\Input\\RawData"
+    input_path = "/Users/liyuxuan/aae875_final_program/Input/RawData"
+    data_name = os.path.join(input_path, 'user_data.csv')
 
     # upload data
     df = pd.read_csv(data_name)
@@ -119,6 +115,7 @@ if __name__ == '__main__':
     # slice data with useful vars
     df = slice_data(df)
     print(df.columns.values.tolist())
+    print(df.head())
     
     # plot admission with asthma by admission type and year
     plot_asthma_by_type_year(df)

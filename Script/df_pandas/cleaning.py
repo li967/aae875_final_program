@@ -61,7 +61,7 @@ def drop_outliers(data_list):
     # drop outliers
     new_data_list = []
     for i, data in enumerate(data_list):
-        data_out = data[(data > lowerb[i]) & (data < upperb[i])]
+        data_out = data[~ (data > lowerb[i]) | (data < upperb[i])]
         new_data_list.append(data_out)
         
     return new_data_list
@@ -125,5 +125,8 @@ if __name__ == '__main__':
     user_data = pd.concat(data_list)
     # output cleaned data to json
     Export = user_data.to_csv(input_path +'user_data.csv')
+    # merge data
+    user_data_sample = user_data.sample(3000)
+    Export = user_data_sample.to_csv(input_path +'user_data_sample.csv')
     
     

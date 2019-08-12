@@ -20,13 +20,13 @@ from df_pandas import regression as dreg
 
 import pandas as pd
 
-def input_data(input_list, input_dir, user_name):
+def input_data(input_list, input_dir):
     '''
     # input data as dataframe (in pandas), put into a list
     # @ param: input file name list, input_dir, user_name (for chatting)
     # @return: a list of dataframes
     '''
-    data_list = dip.read_data(input_list, input_dir, user_name)
+    data_list = dip.read_data(input_list, input_dir)
     return data_list
 
 def data_cleaning(data_list, user_dtstructure, user_name, file_names):
@@ -38,7 +38,7 @@ def data_cleaning(data_list, user_dtstructure, user_name, file_names):
     # get numbers of rows and columns
     nrow, ncol = dcl.rows_and_columns(data_list)
     print('You have %(nrow)d inpatient discharges and %(ncol)d variables\
-     that document these observations.' %{
+that document these observations.' %{
          'nrow':nrow, 'ncol':ncol})
     # chatting
     input(">:")
@@ -48,8 +48,9 @@ def data_cleaning(data_list, user_dtstructure, user_name, file_names):
     # drop missing values
     print('\nNo problem, I can help you with this. Let\'s clean the data first.')
     print('Would you like to drop observations with missing values?')
-    input(":>")
+    input(">:")
     
+    print('OK. Start dropping missing values...')
     data_list = dcl.drop_missing_values(data_list) # drop missings
     nrow, ncol = dcl.rows_and_columns(data_list)   # update data shape after dropping
     print("\nI have removed all the missing values in your data.") # chatting
