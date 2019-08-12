@@ -20,6 +20,14 @@ from df_pandas import regression as dreg
 
 import pandas as pd
 
+def input_data(input_list, input_dir, user_name):
+    '''
+    # input data as dataframe (in pandas), put into a list
+    # @ param: input file name list, input_dir, user_name (for chatting)
+    # @return: a list of dataframes
+    '''
+    data_list = dip.read_data(input_list, input_dir, user_name)
+    return data_list
 
 def data_cleaning(data_list, user_dtstructure, user_name, file_names):
     '''

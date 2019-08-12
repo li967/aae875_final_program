@@ -111,7 +111,7 @@ def input_data():
     print('\nWhat is the data structure you would like to work with?')
     user_dtstructure = pt.data_structure_test()
     print('\nOk, good choice.')
-        
+    
     return (input_list, user_dtstructure) 
     
 def data_cleaning(data_list, user_dtstructure, user_name, file_names):
@@ -156,7 +156,7 @@ def summary_stats(df, user_dtstructure, user_name):
     
 def linear_model():
     '''
-    # your comments here
+    # do linear_models
     '''
     pass 
         
@@ -179,22 +179,19 @@ def main():
     input_dir, output_dir = set_input_output_path(cdrive)
     
     # input the data
-    input_list, user_dtstructure = input_data()
-    if user_dtstructure == 'list': # for user choosing csv/list
-        # read data
-        file_list = cip.read_data(input_list, input_dir)
-        # how many rows and columns
-        ccl.rows_and_columns(file_list)
-    if user_dtstructure == 'dataframe': # for user choosing dataframe
-        # read data
-        data_list = dip.read_data(input_list, input_dir, user_name)
-    
+    # get file names and preferred data structrue
+    input_list, user_dtstructure = input_data()    
+    if user_dtstructure == 'dataframe':
+        data_list = d.input_data(input_list, input_dir, user_name)
     
     # checking data shape, deleting outliers, merging
     user_data = data_cleaning(data_list, user_dtstructure, user_name, input_list)
     
     # stat description
     summary_stats(user_data, user_dtstructure, user_name)
+    
+    # regression
+    linear_model()
     
 
 if __name__ == "__main__":
