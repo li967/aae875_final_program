@@ -13,8 +13,6 @@
 #
 ############################### 80 COLUMNS WIDE ################################
 import csv
-import numpy as np
-import pandas as pd
 import os
 
 def read_data(file_names, input_path):
@@ -29,9 +27,13 @@ def read_data(file_names, input_path):
     file_list = []
     for token in read_list:
         print('Start uploading:', token)
-        f = open (token, 'r')
-        data = list(csv.reader(f, delimiter = ','))
-        file_list.append(data)
+        with open(token,'r') as f:
+            data = list(csv.reader(f, delimiter = ','))
+            for row in data:
+                row[10] = str(row[10])
+                row[35] = str(row[35])
+                row[36] = str(row[36])
+            file_list.append(data)
         print('Done upload:', token)
         
     return file_list
@@ -43,7 +45,7 @@ if __name__ == '__main__':
     file_names = ['SPARCS2014.csv', 'SPARCS2015.csv', 'SPARCS2016.csv']
     
     data_list = read_data(file_names, input_path)
-    print(data_list)
+    print(data_list[0][0,10])
       
                
          
