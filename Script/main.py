@@ -20,7 +20,7 @@ import paths as pt
 
 
 from df_pandas import df_main as d
-from list_csv import list_main as l
+from list_csv import list_main as c
 
 import platform
 import os
@@ -176,8 +176,11 @@ def main():
     # input the data
     # get file names and preferred data structrue
     input_list, user_dtstructure = input_data()    
+    
     if user_dtstructure == 'dataframe':
         data_list = d.input_data(input_list, input_dir)
+    if user_dtstructure == 'list':
+        data_list = c.input_data(input_list, input_dir)
     
     # checking data shape, deleting outliers, merging
     user_data = data_cleaning(data_list, user_dtstructure, user_name, input_list)

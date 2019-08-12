@@ -36,13 +36,14 @@ def read_data(file_names, input_path):
         
     return file_list
         
-def rows_and_columns(file_list):
-    print('Tell me what you would like to do next?')
-    for file in file_list:
-        print(len(file))
     
-        
- 
+if __name__ == '__main__':
+    #input_path = "G:\\Box Sync\\MyFiles\\875\\final_program_git\\aae875_final_program\\Input\\RawData"
+    input_path = "/Users/liyuxuan/aae875_final_program/Input/RawData/"
+    file_names = ['SPARCS2014.csv', 'SPARCS2015.csv', 'SPARCS2016.csv']
+    
+    data_list = read_data(file_names, input_path)
+    print(data_list)
       
                
          
