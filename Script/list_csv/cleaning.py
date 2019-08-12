@@ -38,14 +38,19 @@ def drop_missing_values(data_list):
     
     for data in data_list:
         # drop unuseful variables (which contains too many missings)
-        data = [row[0:30]+row[32:37] for row in data]
+        data = [row[0:29]+row[31:37] for row in data]
         # get row number of missing values
         missing_rnum = set()
-        for index, row in data:
+        for index, row in enumerate(data):
             for cell in row: 
                 if cell == '':
                     missing_rnum.add(index)
+        print(data[0:10])
         # drop missing values
+        print(missing_rnum)
+        missing_rnum = list(missing_rnum)
+        missing_rnum.sort()
+        print(missing_rnum)
         for rnum in missing_rnum:
             data.pop(rnum)
 
@@ -112,7 +117,7 @@ if __name__ == '__main__':
     input_path = "/Users/liyuxuan/aae875_final_program/Input/RawData/"
     file_names = ['SPARCS2014.csv', 'SPARCS2015.csv', 'SPARCS2016.csv']
     # upload sample data
-    from list_sample import data_list
+    from list_sample import data_list as data_list
     # data_list = ip.read_data(file_names, input_path)
     
     # test rows and cols
