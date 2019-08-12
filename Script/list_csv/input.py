@@ -33,6 +33,8 @@ def read_data(file_names, input_path):
                 row[10] = str(row[10])
                 row[35] = str(row[35])
                 row[36] = str(row[36])
+            print('#####################DELETE########################')
+            data = data[:1000]
             file_list.append(data)
         print('Done upload:', token)
         
@@ -45,7 +47,11 @@ if __name__ == '__main__':
     file_names = ['SPARCS2014.csv', 'SPARCS2015.csv', 'SPARCS2016.csv']
     
     data_list = read_data(file_names, input_path)
-    print(data_list[0][0,10])
+    print(data_list[0][0:10])
+    
+    # save list
+    with open('list_sample.py', 'w') as f:
+        f.write('data_list = %s' % data_list)
       
                
          

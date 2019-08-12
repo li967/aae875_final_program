@@ -35,12 +35,21 @@ def drop_missing_values(data_list):
     # @param:  data_list
     # @return: new_data_list
     '''
-    # drop unuseful variables (which contains too many missings)
-    cols = list(range(0,30)) + list(range(32,37)) 
-    data_list = [data.iloc[:,cols] for data in data_list ]
-    # drop missing values
-    new_data_list = [data.dropna() for data in data_list]
-    return new_data_list
+    
+    for data in data_list:
+        # drop unuseful variables (which contains too many missings)
+        data = [row[0:30]+row[32:37] for row in data]
+        # get row number of missing values
+        missing_rnum = set()
+        for index, row in data:
+            for cell in row: 
+                if cell == '':
+                    missing_rnum.add(index)
+        # drop missing values
+        for rnum in missing_rnum:
+            data.pop(rnum)
+
+    return data_list
 
 def drop_outliers(data_list):
     '''
@@ -102,8 +111,9 @@ if __name__ == '__main__':
     #input_path = "G:\\Box Sync\\MyFiles\\875\\final_program_git\\aae875_final_program\\Input\\RawData"
     input_path = "/Users/liyuxuan/aae875_final_program/Input/RawData/"
     file_names = ['SPARCS2014.csv', 'SPARCS2015.csv', 'SPARCS2016.csv']
-    # upload data
-    data_list = ip.read_data(file_names, input_path)
+    # upload sample data
+    from list_sample import data_list
+    # data_list = ip.read_data(file_names, input_path)
     
     # test rows and cols
     print('raw data shape', rows_and_columns(data_list))

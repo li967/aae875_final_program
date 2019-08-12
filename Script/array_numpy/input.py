@@ -13,9 +13,8 @@
 #
 ############################### 80 COLUMNS WIDE ################################
 import csv
-import numpy as np
-import pandas as pd
 import os
+import numpy as np
 
 def read_data(file_names, input_path):
     '''
@@ -29,20 +28,31 @@ def read_data(file_names, input_path):
     file_list = []
     for token in read_list:
         print('Start uploading:', token)
-        f = open (token, 'r')
-        data = list(csv.reader(f, delimiter = ','))
-        file_list.append(data)
+        with open(token,'r') as f:
+            data = np.array(list(csv.reader(f, delimiter = ',')))
+            for row in data:
+                row[10] = str(row[10])
+                row[35] = str(row[35])
+                row[36] = str(row[36])
+            print('#####################DELETE########################')
+            data = data[:1000]
+            file_list.append(data)
         print('Done upload:', token)
         
     return file_list
         
-def rows_and_columns(file_list):
-    print('Tell me what you would like to do next?')
-    for file in file_list:
-        print(len(file))
     
-        
- 
+if __name__ == '__main__':
+    #input_path = "G:\\Box Sync\\MyFiles\\875\\final_program_git\\aae875_final_program\\Input\\RawData"
+    input_path = "/Users/liyuxuan/aae875_final_program/Input/RawData/"
+    file_names = ['SPARCS2014.csv', 'SPARCS2015.csv', 'SPARCS2016.csv']
+    
+    data_list = read_data(file_names, input_path)
+    print(data_list[0][0:10])
+    
+    # save list
+    with open('list_sample.py', 'w') as f:
+        f.write('data_list = %s' % data_list)
       
                
          
