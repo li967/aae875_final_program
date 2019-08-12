@@ -13,18 +13,40 @@
 #
 ############################### 80 COLUMNS WIDE ################################
 
+from df_pandas import input as dip
+ 
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import os
+from _operator import concat
+
 
 def slice_data(df):
     '''
-    # keep only variables that are useful
-    # '''
-    cols = [5,7,10,11,13,15,26,27,28,35,36]
-    df1 = df.iloc[:,cols]
+    # Keep useful data only
+    #
+    # the "useful" vars are:
+    # ['Age Group', 'Gender', 'Length of Stay', 'Type of Admission', 
+    # 'Discharge Year', 'CCS Diagnosis Description', 
+    # 'Payment Typology 1', 'Payment Typology 2', 'Payment Typology 3', 
+    # 'Total Charges', 'Total Costs']
+    #
+    # the useful observations are:
+    # observation with asthma
+    #
+    # @param: original dataframe
+    # @return: new dataframe
+    '''
+    # select vars as described above
+    cols = [6,8,11,12,14,16,27,28,29,34,35]
+    df = df.iloc[:,cols]
     
-    return df1
+    # filter to asthma
+    df_asthma = df.loc[df['CCS Diagnosis Description'] == 'Asthma', :]
+    
+    return df_asthma
+
     
     
 def add_label(ax):
@@ -34,28 +56,77 @@ def add_label(ax):
         y=p.get_bbox().get_points()[1,1]
         ax.annotate('{:3.0f}'.format(y),(x.mean(),y),ha='center',va='bottom')
         
-def sns_asthma_by_type_year(df):  
+def plot_asthma_by_type_year(df):  
     ''' bar plot the number of survived and died people by class'''
-    ax = sns.countplot(x = 'Pclass', hue = 'Survived', palette = 'Set1', data = df)
-    ax.set(title = 'Passenger status (Survived/Died) against Passenger Class (sns)', 
-           xlabel = 'Passenger Class', ylabel = 'Total')
+    ax = sns.countplot(x = 'Discharge Year', 
+                       hue = 'Type of Admission', 
+                       palette = 'Set1', 
+                       data = df)
+    
+    ax.set(title = 'Type of admission with asthma conditions by year', 
+           xlabel = 'Discharge Year', ylabel = 'Admissions with asthma')
+    
     add_label(ax)
     plt.show()
-
-
-
-
-if __name__ == '__main__':
-    input_path = "/Users/liyuxuan/aae875_final_program/Input/RawData/"
     
+    
+    
+def plot_payment_pie(df):
+    ''' pie plot payment resources'''
+    
+    # grab all payment information into one column
+    df_payment =pd.concat([df.loc[:,['Payment Typology 1']]
+                           .rename(columns = {'Payment Typology 1':'PayType'}),
+                           df.loc[:,['Payment Typology 2']]
+                           .rename(columns = {'Payment Typology 2':'PayType'}),
+                           df.loc[:,['Payment Typology 3']]
+                           .rename(columns = {'Payment Typology 3':'PayType'})])
+    
+    # prepare data to plot
+    labels = df_payment['PayType'].unique().tolist()
+    sizes = [df_payment[df_payment.PayType == paytype]["PayType"].count() 
+            for paytype in labels]
+    
+    # instead of percentage, show the actual number
+    # tot = sum(sizes)
+    # autopct = lambda x: "%d" % round(x*tot/100,2)
+    
+    # plot
+    plt.pie(sizes, labels=labels, autopct='%1.1f%%')
+    
+    # title
+    plt.title('Payment Resources of Patients with Asthma', fontsize=20)
+    
+    # legend (redundant)
+    # patches, texts = plt.pie(sizes)
+    # plt.legend(patches, labels, loc="lower right")
+    
+    # produces a perfectly circular chart
+    plt.axis('equal')
+    
+    plt.show()
+    
+
+
+
+if __name__ == '__main__':    
+    input_path = "G:\\Box Sync\\MyFiles\\875\\final_program_git\\aae875_final_program\\Input\\RawData"
+    data_name = os.path.join(input_path, 'user_data_sample.csv')
+
     # upload data
-    df = pd.read_json(input_path + 'user_data.json')
-    
-    # slice data wiht useful vars
+    df = pd.read_csv(data_name)
+    print(df.columns.values.tolist())
+    # slice data with useful vars
     df = slice_data(df)
-    print(df.colu)
+    print(df.columns.values.tolist())
     
-    # plot 
-    sns_asthma_by_type_year(df)
+    # plot admission with asthma by admission type and year
+    plot_asthma_by_type_year(df)
+    
+    print(df.head(10))
+    
+    # plot payment resource
+    plot_payment_pie(df)
+    
     
     
