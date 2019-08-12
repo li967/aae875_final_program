@@ -25,23 +25,28 @@ def slice_data(df):
     # Keep useful data only
     #
     # the "useful" vars are:
-    # ['Age Group', 'Gender', 'Length of Stay', 'Type of Admission', 
+    # ['Health Service Area', 'Facility Id', 'Facility Name', 'Age Group', 
+    # 'Gender', 'Race', 'Length of Stay', 'Type of Admission', 'Patient Disposition', 
     # 'Discharge Year', 'CCS Diagnosis Description', 
     # 'Payment Typology 1', 'Payment Typology 2', 'Payment Typology 3', 
     # 'Total Charges', 'Total Costs']
-    #
-    # the useful observations are:
-    # observation with asthma
     #
     # @param: original dataframe
     # @return: new dataframe
     '''
     # select data as described above
-    cols = [6,8,11,12,14,16,27,28,29,34,35]
-    df = df.iloc[:,cols].loc[df['CCS Diagnosis Description'] == 'Asthma']
+    cols = [1,4,5,6,8,9,11,12,13,14,16,27,28,29,34,35]
+    df = df.iloc[:,cols]
     
     return df
 
+def filter_asthma(df):
+    '''
+    # filter data to those with asthma
+    # @param: old dataframe
+    # @return : new dataframe
+    '''
+    return df.loc[df['CCS Diagnosis Description'] == 'Asthma']
     
     
 def add_label(ax):
@@ -113,7 +118,7 @@ if __name__ == '__main__':
     df = pd.read_csv(data_name)
     print(df.columns.values.tolist())
     # slice data with useful vars
-    df = slice_data(df)
+    df = filter_asthma(slice_data(df))
     print(df.columns.values.tolist())
     print(df.head())
     

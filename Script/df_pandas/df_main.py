@@ -55,8 +55,8 @@ that document these observations.' %{
     nrow, ncol = dcl.rows_and_columns(data_list)   # update data shape after dropping
     print("\nI have removed all the missing values in your data.") # chatting
     print('You now have %(pat)d million inpatient discharges and %(var)d \
-    that document these observations.' %{
-        'pat':nrow, 'var':ncol})                   # chatting
+that document these observations.' %{
+        'pat':(nrow/1000000), 'var':ncol})                   # chatting
     input(">:")
     
     # remove data outliers
@@ -67,7 +67,7 @@ that document these observations.' %{
     nrow, ncol = dcl.rows_and_columns(data_list) # update data shape after dropping
     print('\nI have removed all outliers in your data.')
     print('You now have %(pat)d inpatient discharges and %(var)d variables\
-    that document these observations.'  %{
+that document these observations.'  %{
         'pat':nrow, 'var':ncol})                 # chatting
     input(">:")
     input(">:")
@@ -103,6 +103,7 @@ def summary_stats(df, user_name):
     
     # cut down unuseful variabls first (for quickly running)
     df = dst.slice_data(df)
+    df = dst.filter_asthma(df)
     
     # chatting
     print('\nSure thing! I can plot some grphs for you.', end=' ')
@@ -128,4 +129,25 @@ def summary_stats(df, user_name):
     dst.plot_payment_pie(df)
     input('>:')
     
+def linear_model(df, user_name):
+    '''linear model'''
+    # chatting
+    print(user_name, '- I agree with you. In the meanwhile,', end =' ')
+    print('I need a break. I will be back in 15 minutes.')
+    input('>:')
     
+    # slice useful data, convert data to float
+    df = dst.slice_data(df)
+    df = dst.filter_asthma(df)
+    df = dreg.convert_to_float(df)
+    
+    # chatting
+    print('Ok, I am back. You mentioned your main objective is ', end ='')
+    print('to fit a linear regression model. I am ready whenever you are ready.')
+    input('>:')
+    print('What is your question?')
+    input('>:')
+    
+    # regssion 
+    model1 = dreg.lm('Length of Stay',[
+        "Gender", "Race", "Type of Admission", "Patient Disposition", "Health Service Area", "Facility Id", "Discharge Year"], df)

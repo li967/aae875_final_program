@@ -148,11 +148,12 @@ def summary_stats(df, user_dtstructure, user_name):
     
     
     
-def linear_model():
+def linear_model(df,user_dtstructure):
     '''
     # do linear_models
     '''
-    pass 
+    if user_dtstructure == 'dataframe':
+        d.linear_model(df)
         
 
     
@@ -185,7 +186,7 @@ def main():
     summary_stats(user_data, user_dtstructure, user_name)
     
     # regression
-    linear_model()
+    linear_model(user_data,user_dtstructure)
     
     del output_dir
     
