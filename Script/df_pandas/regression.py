@@ -35,6 +35,29 @@ def convert_to_float(df):
     data = pd.DataFrame(df, dtype='float')
     return data
 
+def get_independent_vars():
+    '''
+    # prompt user to give the independent variables for regression 
+    # split into a list
+    # @param: none
+    # @return: a list of independent variable name
+    '''
+    print('Please tell me all the independent variables. ', end = '')
+    print('Use comma to seperate variables with capitalized each var name.')
+    print('Ex: Indi Var1, Indi Var2, Indi Var3')
+    user_input = input('>:').split(', ')
+    
+    return user_input
+
+def get_dependent_var():
+    '''
+    # prompt user to give the dependent variables for regression
+    # return the single string
+    '''
+    print('Please tell me the dependent variable you are interest in')
+    return input('>:')
+    
+    
 def lm(y, X, data):
     lhs = data[y]
     rhs = data[X]
@@ -44,6 +67,21 @@ def lm(y, X, data):
     print(model.summary())
     return model
 
+def lm_from_input(data):
+    '''
+    # prompt user to enter the dependent and indepent variables 
+    # do the regression and report
+    # @param: dataframe
+    # @return: fitted model
+    '''
+    lhs = data[get_dependent_var()]   # get denpendent variables
+    rhs = data[get_independent_vars()]# get independent variables
+    
+    # do the regression 
+    model = sm.OLS(lhs.astype(float), rhs.astype(float)).fit()
+    print(model.summary())
+    return model
+    
 
 if __name__ == '__main__':
     # uoload data

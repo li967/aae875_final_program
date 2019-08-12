@@ -151,3 +151,14 @@ def linear_model(df, user_name):
     # regssion 
     model1 = dreg.lm('Length of Stay',[
         "Gender", "Race", "Type of Admission", "Patient Disposition", "Health Service Area", "Facility Id", "Discharge Year"], df)
+    
+    # more regression?
+    while True:
+        print('Would you like to do more regressions?')
+        print('Press \'n\' to quit')
+        dreg.lm_from_input(df)
+        
+        if input('>:') == 'n':
+            print('Goodbye', user_name + '. Have a good night!')
+            break
+        
