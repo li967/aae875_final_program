@@ -14,7 +14,6 @@
 ############################### 80 COLUMNS WIDE ################################
 import csv
 import os
-import numpy as np
 
 def read_data(file_names, input_path):
     '''
@@ -29,14 +28,9 @@ def read_data(file_names, input_path):
     for token in read_list:
         print('Start uploading:', token)
         with open(token,'r') as f:
-            data = np.array(list(csv.reader(f, delimiter = ',')))
-            for row in data:
-                row[10] = str(row[10])
-                row[35] = str(row[35])
-                row[36] = str(row[36])
-            print('#####################DELETE########################')
-            data = data[:1000]
-            file_list.append(data)
+            csvReader = csv.reader(f, delimiter = ";")
+            for row in csvReader:
+                
         print('Done upload:', token)
         
     return file_list
@@ -51,7 +45,7 @@ if __name__ == '__main__':
     print(data_list[0][0:10])
     
     # save list
-    with open('list_sample.py', 'w') as f:
+    with open('list_full.py', 'w') as f:
         f.write('data_list = %s' % data_list)
       
                

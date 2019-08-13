@@ -21,6 +21,7 @@ import paths as pt
 
 from df_pandas import df_main as d
 from list_csv import list_main as c
+from array_numpy import array_main as a
 
 import platform
 import os
@@ -125,7 +126,12 @@ def data_cleaning(data_list, user_dtstructure, user_name, file_names):
     if user_dtstructure == 'dataframe':
         # call df_main, return cleaned, merged data
         user_data = d.data_cleaning(data_list, user_dtstructure, user_name, file_names)
-    
+    if user_dtstructure == 'list':
+        # call df_main, return cleaned, merged data
+        user_data = c.data_cleaning(data_list, user_dtstructure, user_name, file_names)
+    if user_dtstructure == 'array':
+        # call df_main, return cleaned, merged data
+        user_data = a.data_cleaning(data_list, user_dtstructure, user_name, file_names)    
     # Chatting, ask if user want do more data cleaning    
     input('>:')
     print('\nYes, unless you want to do more data cleaning?')
