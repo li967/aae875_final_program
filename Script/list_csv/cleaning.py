@@ -70,7 +70,10 @@ def convert_var_to_float(data_list, varname):
         loc = data[0].index(varname)
         # change
         for row in data[1:]:
-            row[loc] = float(row[loc])
+            try:
+                row[loc] = float(row[loc])
+            except ValueError:
+                row[loc] = 130
     return data_list
         
 
@@ -82,6 +85,12 @@ def drop_outliers(data_list):
     # @param: data_list
     # @return: new_data_list
     '''
+    # convert length of stay, total cost, total charge to float
+    data_list = convert_var_to_float(data_list, 'Length of Stay')
+    data_list = convert_var_to_float(data_list, "Total Charges")
+    data_list = convert_var_to_float(data_list, "Total Costs")
+    
+    
     # get IQR boundaries for Length of Stay
     lgth_bound = [] 
     for data in data_list:
@@ -94,10 +103,10 @@ def drop_outliers(data_list):
         # get IQR boundaries 
         q1loc= int(len(lgth)/4) # location for first quantile
         q3loc= 3 * q1loc        # location for third quantile
-        q1 = lgth[q1loc]        # get 1st quantile
-        q3 = lgth[q3loc]        # get 3rd quantile
-        upperb = q1 - 1.5 * (q3 - q1)
-        lowerb = q3 + 1.5 * (q3 - q1) # get boundaries for outliers
+        q1 = int(lgth[q1loc])        # get 1st quantile
+        q3 = int(lgth[q3loc])        # get 3rd quantile
+        lowerb = q1 - 1.5 * (q3 - q1)
+        upperb = q3 + 1.5 * (q3 - q1) # get boundaries for outliers
         print(q1loc, q3loc,q1,q3,lowerb,upperb)
         lgth_bound.append((lowerb,upperb))
         

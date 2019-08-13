@@ -14,8 +14,7 @@
 ############################### 80 COLUMNS WIDE ################################
 
 from array_numpy import input as ip
-import pandas as pd
-import numpy as np
+import pandas as pd 
 
 def rows_and_columns(data_list):
     '''

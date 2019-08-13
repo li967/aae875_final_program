@@ -55,9 +55,9 @@ that document these observations.' %{
     data_list = ccl.drop_missing_values(data_list) # drop missings
     nrow, ncol = ccl.rows_and_columns(data_list)   # update data shape after dropping
     print("\nI have removed all the missing values in your data.") # chatting
-    print('You now have %(pat)d million inpatient discharges and %(var)d \
+    print('You now have %(pat)d inpatient discharges and %(var)d \
 that document these observations.' %{
-        'pat':(nrow/1000000), 'var':ncol})                   # chatting
+        'pat':nrow, 'var':ncol})                   # chatting
     input(">:")
     
     # remove data outliers
@@ -90,7 +90,7 @@ that document these observations.'  %{
     print(data_colnames)
     
     # merge data
-    user_data = pd.concat(data_list)
+    user_data = ccl.merge_data(data_list)
     
     return user_data
         

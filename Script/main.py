@@ -40,6 +40,7 @@ def welcome_prompt():
     # prints the welcome prompt.
     # @param: none.
     '''
+    print('This program is not completed. Please choose "dataframe" as preferred instructure')
     print("Hi, I'm Freddie, what is your name?")
 
     user_name  = input(">:")
