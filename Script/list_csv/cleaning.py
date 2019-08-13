@@ -96,18 +96,22 @@ def drop_outliers(data_list):
         q3loc= 3 * q1loc        # location for third quantile
         q1 = lgth[q1loc]        # get 1st quantile
         q3 = lgth[q3loc]        # get 3rd quantile
-        lowerb = q1 - 1.5 * (q3 - q1)
-        upperb = q3 + 1.5 * (q3 - q1) # get boundaries for outliers
-        print(q1loc, q3loc,q1,q3,upperb,lowerb)
-        lgth_bound.append((upperb,lowerb))
+        upperb = q1 - 1.5 * (q3 - q1)
+        lowerb = q3 + 1.5 * (q3 - q1) # get boundaries for outliers
+        print(q1loc, q3loc,q1,q3,lowerb,upperb)
+        lgth_bound.append((lowerb,upperb))
         
     # remove outliers using IQR boundaries
     new_data_list = []
     for i, data in enumerate(data_list):
-        header = data[0]
-        upperb = lgth_bound[i][0]
-        lowerb = lgth_bound[i][1]
-        data_out = header + [row for row in data[1:] if (lowerb<=row[loc]<=upperb)]
+        loc = data[0].index("Length of Stay")
+        print(loc)
+        header = [data[0]]
+        upperb = lgth_bound[i][1]
+        lowerb = lgth_bound[i][0]
+        print(upperb,lowerb,header)
+        data_out = [row for row in data[1:] if (lowerb<=row[loc]<=upperb)]
+        data_out = header + data_out
         new_data_list.append(data_out)
         
     return new_data_list
@@ -120,12 +124,13 @@ def compare_colnames(data_list, file_names):
     # @param: data_list
     # @return: data_colnames (a dataframe of all data names)
     '''
-    data_colnames = pd.DataFrame(np.array([data[0] for data in data_list]),
-                                 columns=file_names)
-    print(data_colnames)
-    data_colnames = data_colnames.T
-    data_colnames.columns = file_names
+    data_col = {}
+    for i, data in enumerate(data_list):
+        data_col.update({i:list(data[0][:37])})
+    data_colnames = pd.DataFrame(data_col)
+    
     return data_colnames
+
 
 def align_colnames(data_list, data_colnames):
     '''
@@ -133,21 +138,24 @@ def align_colnames(data_list, data_colnames):
     # @param: data_list
     # @param: new_data_list
     '''
-    # put var names standards in dictionaries
-    std = {}
-    for i in range(data_colnames.shape[0]):
-        std.update({str(data_colnames.iloc[i,0]):str(data_colnames.iloc[i,2])})
-        
-    # rename datasets using dictionaries
-    new_data_list = [data.rename(columns = std) for data in data_list]
+    data_list[0][0] = data_list[2][0]
     
-    return new_data_list
-    
+    return data_list
+
+def merge_data(data_list):
+    '''
+    # merge 3 data set into a long one
+    # @param: data_list (a list of nested lists)
+    # @return: data (a nested list)
+    '''
+    user_data = data_list[0][:] + data_list[1][1:] + data_list[2][1:]
+    return user_data
     
 
     
     
 if __name__ == '__main__':
+    print("test1")
     #input_path = "G:\\Box Sync\\MyFiles\\875\\final_program_git\\aae875_final_program\\Input\\RawData"
     input_path = "/Users/liyuxuan/aae875_final_program/Input/RawData/"
     file_names = ['SPARCS2014.csv', 'SPARCS2015.csv', 'SPARCS2016.csv']
@@ -169,24 +177,35 @@ if __name__ == '__main__':
     data_list = convert_var_to_float(data_list, "Total Charges")
     data_list = convert_var_to_float(data_list, "Total Costs")
     print('Convert',rows_and_columns(data_list))
+    '''
     # test outliers
     data_list = drop_outliers(data_list)
     print('Outlier', rows_and_columns(data_list))
     print(data_list)
+    '''
     
     # data col names
     data_colnames = compare_colnames(data_list, file_names) #compare raw
     print(data_colnames)
+    
+    
     data_list = align_colnames(data_list, data_colnames)    #rename
     data_colnames = compare_colnames(data_list, file_names) #compare new
     print(data_colnames)
     
     # merge data
-    user_data = pd.concat(data_list)
+    user_data = merge_data(data_list)
+    
+    # save cleaned list
+    with open('list_clean.py', 'w') as f:
+        f.write('user_data = %s' % user_data)
+    
+    '''
     # output cleaned data to json
     Export = user_data.to_csv(input_path +'user_data.csv')
     # merge data
     user_data_sample = user_data.sample(3000)
     Export = user_data_sample.to_csv(input_path +'user_data_sample.csv')
+    '''
     
     
