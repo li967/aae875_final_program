@@ -170,8 +170,7 @@ if __name__ == '__main__':
     file_names = ['SPARCS2014.csv', 'SPARCS2015.csv', 'SPARCS2016.csv']
     # upload sample data
     print('Start...')
-    from list_sample import data_list as data_list
-    # data_list = ip.read_data(file_names, input_path)
+    data_list = ip.read_data(file_names, input_path)
     print('Over...')
     
     
