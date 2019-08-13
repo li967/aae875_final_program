@@ -54,9 +54,9 @@ that document these observations.' %{
     data_list = dcl.drop_missing_values(data_list) # drop missings
     nrow, ncol = dcl.rows_and_columns(data_list)   # update data shape after dropping
     print("\nI have removed all the missing values in your data.") # chatting
-    print('You now have %(pat)d million inpatient discharges and %(var)d \
+    print('You now have %(pat)d inpatient discharges and %(var)d \
 that document these observations.' %{
-        'pat':(nrow/1000000), 'var':ncol})                   # chatting
+        'pat':nrow, 'var':ncol})                   # chatting
     input(">:")
     
     # remove data outliers
@@ -102,7 +102,7 @@ def summary_stats(df, user_name):
     '''
     
     # cut down unuseful variabls first (for quickly running)
-    df = dst.slice_data(df)
+    # df = dst.slice_data(df)
     df = dst.filter_asthma(df)
     
     # chatting
