@@ -22,6 +22,7 @@ import statsmodels.api as sm
 import pandas as pd
 import os
 import numpy as np
+from paths import output_path
 
 def convert_to_float(df):
     '''
@@ -65,9 +66,10 @@ def lm(y, X, data):
     
     model = sm.OLS(lhs.astype(float), rhs.astype(float)).fit()
     print(model.summary())
+        
     return model
 
-def lm_from_input(data):
+def lm_from_input(data, output_path):
     '''
     # prompt user to enter the dependent and indepent variables 
     # do the regression and report
@@ -80,7 +82,20 @@ def lm_from_input(data):
     # do the regression 
     model = sm.OLS(lhs.astype(float), rhs.astype(float)).fit()
     print(model.summary())
+
     return model
+
+def output_model(model, output_path):
+    '''
+    # Print model summary to a txt file
+    # @param: model, output_path
+    # @return: none
+    '''
+    
+    with open(os.path.join(output_path, 'my_regression.txt'), 'a+') as f:
+        f.write('\n')
+        f.write(str(model.summary()))
+    
     
 
 if __name__ == '__main__':

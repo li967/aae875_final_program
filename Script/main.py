@@ -110,7 +110,7 @@ def input_data():
     
     return (input_list, user_dtstructure) 
     
-def data_cleaning(data_list, user_dtstructure, user_name, file_names):
+def data_cleaning(data_list, user_dtstructure, user_name, file_names, output_path):
     '''
     # checking data shapes, cleaning, merging
     # calling different modules depend on user-chosen data structure
@@ -126,7 +126,7 @@ def data_cleaning(data_list, user_dtstructure, user_name, file_names):
     # cleaning data
     if user_dtstructure == 'dataframe':
         # call df_main, return cleaned, merged data
-        user_data = d.data_cleaning(data_list, user_dtstructure, user_name, file_names)
+        user_data = d.data_cleaning(data_list, user_dtstructure, user_name, file_names, output_path)
     if user_dtstructure == 'list':
         # call df_main, return cleaned, merged data
         user_data = c.data_cleaning(data_list, user_dtstructure, user_name, file_names)
@@ -155,12 +155,12 @@ def summary_stats(df, user_dtstructure, user_name):
     
     
     
-def linear_model(df,user_dtstructure, user_name):
+def linear_model(df,user_dtstructure, user_name, output_path):
     '''
     # do linear_models
     '''
     if user_dtstructure == 'dataframe':
-        d.linear_model(df, user_name)
+        d.linear_model(df, user_name, output_path)
         
 
     
@@ -190,13 +190,13 @@ def main():
         data_list = c.input_data(input_list, input_dir)
     
     # checking data shape, deleting outliers, merging
-    user_data = data_cleaning(data_list, user_dtstructure, user_name, input_list)
+    user_data = data_cleaning(data_list, user_dtstructure, user_name, input_list, output_dir)
     
     # stat description
     summary_stats(user_data, user_dtstructure, user_name)
     
     # regression
-    linear_model(user_data,user_dtstructure, user_name)
+    linear_model(user_data,user_dtstructure, user_name, output_dir)
     
     del output_dir
     

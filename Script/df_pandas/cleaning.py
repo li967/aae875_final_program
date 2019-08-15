@@ -15,6 +15,7 @@
 
 from df_pandas import input as ip
 import pandas as pd
+import os
 
 def rows_and_columns(data_list):
     '''
@@ -57,16 +58,20 @@ def drop_outliers(data_list):
     upperb = [Q1[i] - 1.5 * IQR[i] for i in range(len(IQR))]
     lowerb = [Q3[i] + 1.5 * IQR[i] for i in range(len(IQR))]
 
-    
     # drop outliers
-    new_data_list = []
-    for i, data in enumerate(data_list):
-        data_out = data[~ (data > lowerb[i]) | (data < upperb[i])]
-        new_data_list.append(data_out)
+    try:
+        new_data_list = []
+        for i, data in enumerate(data_list):
+            data_out = data[~ (float(data) > lowerb[i]) | (float(data) < upperb[i])]
+            new_data_list.append(data_out)
+        return new_data_list
+    except:
+        print("Sorry, I cannot drop outliers for some reason.")
+        print('Let\'s just keep moving.')
+        return data_list
         
-    return new_data_list
 
-def compare_colnames(data_list, file_names):
+def compare_colnames(data_list, file_names, output_path):
     '''
     # compare variable names in multiple datasets
     # output a table for comparing
@@ -76,6 +81,7 @@ def compare_colnames(data_list, file_names):
     data_colnames = pd.DataFrame([data.columns.values.tolist() for data in data_list])
     data_colnames = data_colnames.T
     data_colnames.columns = file_names
+    
     return data_colnames
 
 def align_colnames(data_list, data_colnames):

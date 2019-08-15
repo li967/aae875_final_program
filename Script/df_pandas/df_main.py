@@ -29,7 +29,7 @@ def input_data(input_list, input_dir):
     data_list = dip.read_data(input_list, input_dir)
     return data_list
 
-def data_cleaning(data_list, user_dtstructure, user_name, file_names):
+def data_cleaning(data_list, user_dtstructure, user_name, file_names, output_path):
     '''
     # chatting with user, cleaning data and report human-readable results
     # called by main.py
@@ -75,7 +75,7 @@ that document these observations.'  %{
     # deal with not-matching column names 
     print('I am afraid this is not the best way to move forward.', end = ' ')
     print('The variable names in your data are not consistent over time.')
-    data_colnames = dcl.compare_colnames(data_list, file_names) # get var names
+    data_colnames = dcl.compare_colnames(data_list, file_names, output_path) # get var names
     
     
     print('Let me put these in a table for you. Please see below:')
@@ -84,7 +84,7 @@ that document these observations.'  %{
     
     print('Sure thing! I will use a dictionary for this. Processing...')
     data_list = dcl.align_colnames(data_list, data_colnames) # update col names
-    data_colnames = dcl.compare_colnames(data_list, file_names) # get new names
+    data_colnames = dcl.compare_colnames(data_list, file_names, output_path) # get new names
     print('Variable names match those in year 2016 now. Please see below:')
     print(data_colnames)
     
@@ -129,7 +129,7 @@ def summary_stats(df, user_name):
     dst.plot_payment_pie(df)
     input('>:')
     
-def linear_model(df, user_name):
+def linear_model(df, user_name, output_path):
     '''linear model'''
     # chatting
     print(user_name, '- I agree with you. In the meanwhile,', end =' ')
@@ -137,7 +137,7 @@ def linear_model(df, user_name):
     input('>:')
     
     # slice useful data, convert data to float
-    df = dst.slice_data(df)
+    # df = dst.slice_data(df)
     df = dst.filter_asthma(df)
     df = dreg.convert_to_float(df)
     
@@ -152,13 +152,19 @@ def linear_model(df, user_name):
     model1 = dreg.lm('Length of Stay',[
         "Gender", "Race", "Type of Admission", "Patient Disposition", "Health Service Area", "Facility Id", "Discharge Year"], df)
     
+    # output regression 
+    dreg.output_model(model1, output_path)
+    
     # more regression?
     while True:
         print('Would you like to do more regressions?')
         print('Press \'n\' to quit')
-        dreg.lm_from_input(df)
         
         if input('>:') == 'n':
             print('Goodbye', user_name + '. Have a good night!')
             break
+    
+        model0 = dreg.lm_from_input(df, output_path)
+        dreg.output_model(model0, output_path)
+
         

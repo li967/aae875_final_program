@@ -1,0 +1,60 @@
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:         Length of Stay   R-squared:                       0.503
+Model:                            OLS   Adj. R-squared:                  0.503
+Method:                 Least Squares   F-statistic:                 1.316e+04
+Date:                Thu, 15 Aug 2019   Prob (F-statistic):               0.00
+Time:                        15:34:40   Log-Likelihood:                -70391.
+No. Observations:               26036   AIC:                         1.408e+05
+Df Residuals:                   26034   BIC:                         1.408e+05
+Df Model:                           2                                         
+Covariance Type:            nonrobust                                         
+=======================================================================================
+                          coef    std err          t      P>|t|      [0.025      0.975]
+---------------------------------------------------------------------------------------
+Gender                       0          0        nan        nan           0           0
+Race                 1.604e-19      1e-21    159.707      0.000    1.58e-19    1.62e-19
+Type of Admission    3.761e-19   1.31e-20     28.693      0.000     3.5e-19    4.02e-19
+Patient Disposition          0          0        nan        nan           0           0
+Health Service Area -6.129e-52   3.29e-52     -1.863      0.062   -1.26e-51     3.2e-53
+Facility Id         -4.322e-05    3.2e-05     -1.349      0.177      -0.000    1.96e-05
+Discharge Year          0.0018   2.46e-05     74.535      0.000       0.002       0.002
+==============================================================================
+Omnibus:                    30193.867   Durbin-Watson:                   1.846
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):          6872470.283
+Skew:                           5.827   Prob(JB):                         0.00
+Kurtosis:                      81.735   Cond. No.                          inf
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The smallest eigenvalue is      0. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:         Length of Stay   R-squared:                       0.547
+Model:                            OLS   Adj. R-squared:                  0.547
+Method:                 Least Squares   F-statistic:                 3.148e+04
+Date:                Thu, 15 Aug 2019   Prob (F-statistic):               0.00
+Time:                        15:35:16   Log-Likelihood:                -69170.
+No. Observations:               26036   AIC:                         1.383e+05
+Df Residuals:                   26035   BIC:                         1.384e+05
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+===============================================================================
+                  coef    std err          t      P>|t|      [0.025      0.975]
+-------------------------------------------------------------------------------
+Total Costs     0.0002   1.23e-06    177.428      0.000       0.000       0.000
+Age Group            0          0        nan        nan           0           0
+==============================================================================
+Omnibus:                    86682.484   Durbin-Watson:                   1.466
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):      51118832653.414
+Skew:                         -58.151   Prob(JB):                         0.00
+Kurtosis:                    6866.515   Cond. No.                          inf
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The smallest eigenvalue is      0. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
